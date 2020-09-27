@@ -102,7 +102,23 @@ def handle_message(event):
         text.replace(" ","")
         reply_text = text
         send(reply_text)
-        
+
+    elif(("有開嗎") in text):
+        a = text.split(' ')
+        res = requests.get('https://www.google.com.tw/search?q='+a[0])
+        print(res.status_code)
+        soup = BeautifulSoup(res.content,'html.parser')
+        isopen= soup.find_all('span',attrs={'class':'BNeawe tAd8D AP7Wnd'})
+        name = soup.find_all('div',attrs={'class':'BNeawe deIvCb AP7Wnd'})
+
+        outputstring = ""
+        outputstring +=(name[0].text)+'\n'
+        for i in isopen:
+            outputstring += (i.text + '\n')
+
+        reply_text = outputstring
+        send(reply_text)
+
     elif('dic' in text and 'mdic' not in text):
         a = text.split(' ')
         res = requests.get('http://tw.dictionary.search.yahoo.com/search?p='+a[1])
@@ -110,14 +126,16 @@ def handle_message(event):
         soup = BeautifulSoup(res.content,'html.parser')
         meaning = soup.find_all('div',attrs={'class':'grp grp-tab-content-explanation tabsContent tab-content-explanation tabActived'})
         outputstring = a[1]+"\n"
+        if(str(meaning) =='[]'):
+            meaning = soup.find_all('div',attrs={'class':'compList mb-25 p-rel'})
         for i in meaning:
             turn_into_string = str(i.text)
             
             outputstring += (i.text + '\n')
             count=1
-        #outputstring += '\nSynonyms and Antonyms \n'
-        #for i in synant:
-            #outputstring += (i.text +'\n')
+        # outputstring += '\nSynonyms and Antonyms \n'
+        # for i in synant:
+            # outputstring += (i.text +'\n')
         
         reply_text = outputstring
         send(reply_text)
@@ -130,7 +148,7 @@ def handle_message(event):
         meaning = soup.find_all('div',attrs={'class':'vg'})
         outputstring = a[1]+"\n"
         for i in meaning:
-            print(i.text)
+            #print(i.text)
             outputstring += (i.text + '\n')
             count=1
             
