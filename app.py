@@ -82,14 +82,6 @@ def handle_message(event):
         reply_text = "叫我嗎"
         send(reply_text)
         
-    elif(text=="嵐嵐"):
-        reply_text = "可愛"
-        send(reply_text)
-        
-    elif(text=="范范"):
-        reply_text = "好臭"
-        send(reply_text)
-        
     elif(text=="test"):
         reply_text = "testtest123"
         send(reply_text)
